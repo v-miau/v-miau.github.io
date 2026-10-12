@@ -1,10 +1,17 @@
 import { useState } from "react";
 
-const emoticons ={
+const unknown = {
+    emoji: "❓",
+    flavor: "Please pick a mood, or use the 'random' button to pick a random mood.",
+    color: "black",
+};
+
+
+const moods ={
 	neutral: {
 		emoji: "🐱",
 		flavor: "A cat looking calm and composed.",
-		color: "black"
+		color: "brown"
 	},
 	smirk: {
 		emoji: "😼",
@@ -39,18 +46,18 @@ const emoticons ={
 	scream: {
 		emoji: "🙀",
 		flavor: "A startled cat reacting with alarm.",
-		color: "purple"
-	}
+		color: "purple",
+	},
 }
 
 
 const MoodDisplay = () => {
-	const [mood, setMood] = useState("neutral");
-    const emoticon = emoticons[mood];
+	const [moodName, setMood] = useState("unknown");
+    const moodDetails = moods[moodName] ?? unknown;
 	const [changeCount, setChangeCount] = useState(0);
 
 	function changeMood(newMood) {
-		if (newMood === mood) return;
+		if (newMood === moodName) return;
 
 		setMood(newMood);
 		setChangeCount(count => count + 1);
@@ -64,22 +71,24 @@ const MoodDisplay = () => {
 	);
 
 	const setRandomMood = () => {
-		const moods = Object.keys(emoticons);
-		const randomMood = moods[Math.floor(Math.random() * moods.length)];
+		const moodOptions = Object.keys(moods);
+		const randomMood = moodOptions[Math.floor(Math.random() * moodOptions.length)];
 		changeMood(randomMood);
 	};
 
 	return (
 		<div>
 			<h1>Today's Mood</h1>
-			<h1>{emoticon.emoji}</h1>
-			<p>{mood}</p>
-			<p id="cool" style={{ color: emoticon.color }}>{emoticon.flavor}</p>
+			<h1>{moodDetails.emoji}</h1>
+			<p>{moodName}</p>
+			<p id="cool" style={{ color: moodDetails.color }}>{moodDetails.flavor}</p>
 			<div className="mood-buttons">
-				{Object.keys(emoticons).map(createMoodButton)}
-				<button onClick={()=>{setRandomMood()}}>random</button>
+				{Object.keys(moods).map(createMoodButton)}
+				<button onClick={setRandomMood}>random</button>
 			</div>
-			<p className ="click-counter"> Amount of changes: {changeCount}</p>
+			<p className = "click-counter"> Amount of changes: {changeCount}</p>
+			{changeCount > 99 && <p> Please quit changing the mood. </p>}
+			{changeCount === 67 && <p> 🖕 </p>}
 		</div>
 	);
 }
