@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: v-miau/TrialRatingSite
-          ref: main
+          ref: fix/github-pages-thumbnails
           path: trial-rating-site
 
       - name: Set up Node.js
